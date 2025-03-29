@@ -2,34 +2,34 @@
 // Created by copper_boy on 10/6/23.
 //
 
-#ifndef POKERENGINE_ENGINE_HPP
-#define POKERENGINE_ENGINE_HPP
+#ifndef POKERENGINE_ENGINE_DETAIL_HPP
+#  define POKERENGINE_ENGINE_HPP
 
-#include <algorithm>
-#include <array>
-#include <cassert>
-#include <compare>
-#include <cstdint>
-#include <functional>
-#include <map>
-#include <numeric>
-#include <span>
-#include <stdexcept>
-#include <string>
-#include <tuple>
-#include <type_traits>
-#include <utility>
-#include <vector>
+#  include <algorithm>
+#  include <array>
+#  include <cassert>
+#  include <compare>
+#  include <cstdint>
+#  include <functional>
+#  include <map>
+#  include <numeric>
+#  include <span>
+#  include <stdexcept>
+#  include <string>
+#  include <tuple>
+#  include <type_traits>
+#  include <utility>
+#  include <vector>
 
-#include <magic_enum/magic_enum.hpp>
+#  include <magic_enum/magic_enum.hpp>
 
-#include "card/cards.hpp"
-#include "constants.hpp"
-#include "enums.hpp"
-#include "evaluator/evaluation_result.hpp"
-#include "evaluator/result.hpp"
-#include "pokerengine.hpp"
-#include "vector.hpp"
+#  include "card/cards.hpp"
+#  include "constants.hpp"
+#  include "enums.hpp"
+#  include "evaluator/evaluation_result.hpp"
+#  include "evaluator/result.hpp"
+#  include "pokerengine.hpp"
+#  include "vector.hpp"
 
 namespace pokerengine {
 struct player {
@@ -86,129 +86,6 @@ class engine_detail {
   Engine &engine;
 };
 
-auto is_no_actions_available(enums::round round, enums::state state) noexcept -> bool {
-  return (state == enums::state::out || state == enums::state::allin) || round == enums::round::none ||
-                  round == enums::round::showdown;
-}
-
-auto get_fold_or_check(enums::position player, int32_t highest_round_bet, int32_t committed) noexcept
-                -> player_action {
-  if (committed == highest_round_bet || !highest_round_bet) {
-    return player_action{ 0, enums::action::check, player };
-  }
-  return player_action{ 0, enums::action::fold, player };
-}
-
-auto is_bet_available(int32_t bb_bet, int32_t highest_round_bet, int32_t remaining) noexcept -> bool {
-  return !highest_round_bet && remaining > bb_bet;
-}
-
-auto is_call_available(int32_t highest_round_bet, int32_t committed, int32_t remaining) noexcept -> bool {
-  if (committed + remaining <= highest_round_bet) {
-    return true;
-  }
-
-  return highest_round_bet && (committed < highest_round_bet && (committed + remaining) >= highest_round_bet);
-}
-
-auto is_raise_available(
-                enums::state state,
-                int32_t highest_round_bet,
-                int32_t min_raise,
-                int32_t committed,
-                int32_t remaining) -> bool {
-  if ((committed + remaining) <= highest_round_bet) {
-    return false;
-  }
-
-  return (state == enums::state::init || state == enums::state::alive) ||
-                  (committed < highest_round_bet && (highest_round_bet - committed >= min_raise));
-}
-
-auto get_possible_actions(
-                enums::round round,
-                enums::position player,
-                enums::state state,
-                bool is_left,
-                int32_t bb_bet,
-                int32_t min_raise,
-                int32_t highest_round_bet,
-                int32_t committed,
-                int32_t remaining) -> std::vector< player_action > {
-  if (is_no_actions_available(round, state)) {
-    return std::vector< player_action >{ player_action{ 0, enums::action::none, enums::position::none } };
-  }
-
-  std::vector< player_action > actions{ get_fold_or_check(player, highest_round_bet, committed) };
-
-  if (is_left) {
-    return actions;
-  }
-
-  if (is_bet_available(bb_bet, highest_round_bet, remaining)) {
-    actions.emplace_back(remaining, enums::action::bet, player);
-  } else {
-    if (is_raise_available(state, highest_round_bet, min_raise, committed, remaining)) {
-      actions.emplace_back(remaining, enums::action::raise, player);
-    }
-  }
-
-  if (is_call_available(highest_round_bet, committed, remaining)) {
-    actions.emplace_back(highest_round_bet - committed, enums::action::call, player);
-  }
-
-  return actions;
-}
-
-auto is_normal_action(
-                const player_action &pa,
-                const std::vector< player_action > &all_actions,
-                enums::position player,
-                int32_t min_raise) -> bool {
-  return pa.position == player && player != enums::position::none &&
-                  (std::find_if(all_actions.cbegin(), all_actions.cend(), [&](const auto &element) -> bool {
-                     return (element == pa) ||
-                                     (pa.action == enums::action::bet && element.action == enums::action::bet &&
-                                      pa.amount < element.amount && pa.amount >= min_raise) ||
-                                     (pa.action == enums::action::raise &&
-                                      element.action == enums::action::raise && pa.amount < element.amount &&
-                                      pa.amount >= min_raise);
-                   }) != all_actions.cend());
-}
-
-auto execute_action(const player_action &pa, player &player, int32_t min_raise, int32_t highest_round_bet)
-                -> int32_t {
-  int32_t new_min_raise = min_raise;
-
-  switch (pa.action) {
-  case enums::action::fold: {
-    player.state = enums::state::out;
-  } break;
-  case enums::action::check: {
-    player.state = enums::state::alive;
-  } break;
-  case enums::action::call:
-  case enums::action::bet:
-  case enums::action::raise: {
-    int32_t raise_size = pa.amount + player.round_bet - highest_round_bet;
-    if (raise_size > min_raise) {
-      new_min_raise = raise_size;
-    }
-
-    player.behind -= pa.amount;
-    player.front += pa.amount;
-    player.round_bet += pa.amount;
-
-    player.state = player.behind == 0 ? enums::state::allin : enums::state::alive;
-  } break;
-  default: {
-    throw std::runtime_error{ "Got invalid action to execute" };
-  }
-  }
-
-  return new_min_raise;
-}
-
 auto get_players(const std::vector< player > &players, bool rotate = false) -> std::vector< player > {
   std::vector< player > result;
   std::copy_if(players.cbegin(), players.cend(), std::back_inserter(result), [](const auto &player) -> bool {
@@ -233,57 +110,6 @@ auto is_all_allin(const std::vector< player > &players) -> bool {
 
   return players[static_cast< uint8_t >(enums::position::sb)].state == enums::state::allin &&
                   players[static_cast< uint8_t >(enums::position::bb)].state == enums::state::allin;
-}
-
-auto set_blinds(std::vector< player > &players, int32_t sb_bet, int32_t bb_bet) -> void {
-  std::for_each(players.begin(), players.end(), [&, index = 0](auto &player) mutable -> void {
-    player.state = enums::state::init;
-    player.behind = player.stack;
-    player.round_bet = 0;
-    player.front = 0;
-
-    if (index < 2) {
-      player.state = index == 0 ? enums::state::alive : enums::state::init;
-      player.front = index == 0 ? sb_bet : bb_bet;
-
-      if (player.front > player.behind) {
-        player.front = player.behind;
-      }
-
-      player.behind -= player.front;
-      player.round_bet = player.front;
-
-      if (player.behind == 0) {
-        player.state = enums::state::allin;
-      }
-    }
-
-    index++;
-  });
-}
-
-auto get_chips_to_return(const std::vector< player > &players, int32_t highest_bet)
-                -> std::pair< enums::position, int32_t > {
-  if (std::count_if(players.cbegin(), players.cend(), [&](const auto &element) -> bool {
-        return element.front == highest_bet;
-      }) < 2) {
-    std::vector< int32_t > chips_front;
-    std::for_each(players.cbegin(), players.cend(), [&](const auto &element) -> void {
-      chips_front.push_back(element.front);
-    });
-
-
-    auto position = std::distance(
-                    players.cbegin(),
-                    std::find_if(players.cbegin(), players.cend(), [&](const auto &element) -> bool {
-                      return element.front == highest_bet;
-                    }));
-
-    std::sort(chips_front.begin(), chips_front.end(), std::greater{});
-    return std::make_pair(enums::position(position), highest_bet - chips_front[1]);
-  } else {
-    return std::make_pair(enums::position{ 0 }, 0);
-  }
 }
 
 auto get_chips_front(const std::vector< player > &players, int32_t highest_bet) -> std::vector< int32_t > {
@@ -348,104 +174,7 @@ auto get_adjust_pot(const std::vector< player > &players, int32_t highest_bet, b
     return pot;
   }
 }
-
-auto adjust_side_pot(const std::vector< player > &players, int32_t upper_bound, int32_t lower_bound) noexcept
-                -> std::vector< int32_t > {
-  std::vector< int32_t > result;
-  for (auto const &player : players) {
-    auto chips = player.front;
-    result.push_back(
-                    chips <= lower_bound                ? 0 :
-                                    chips > upper_bound ? upper_bound - lower_bound :
-                                                          chips - lower_bound);
-  }
-
-  return result;
-}
-
-template < uint8_t A = 0, uint8_t B = 1 >
-  requires(A >= 0 && B > 0 && A < B)
-auto get_side_pot_redistribution(
-                const std::vector< player > &ps,
-                const cards &cards,
-                const std::vector< uint8_t > &players,
-                bool flop_dealt,
-                int32_t upper_bound,
-                int32_t lower_bound) -> std::vector< int32_t > {
-  auto winners = get_evaluation_result(cards, players);
-  auto chips_adjusted = adjust_side_pot(ps, upper_bound, lower_bound);
-
-  auto total_pot = static_cast< int32_t >(
-                  std::accumulate(chips_adjusted.cbegin(), chips_adjusted.cend(), 0) *
-                  (flop_dealt ? constants::RAKE_MULTI< A, B > : 1.0f));
-  int32_t amount_each_winner = total_pot / static_cast< int32_t >(winners.size());
-
-  std::vector< int32_t > result;
-  for (size_t index = 0; index < ps.size(); index++) {
-    auto winner = std::find_if(winners.cbegin(), winners.cend(), [&](const auto &element) {
-      return element.second == index;
-    });
-    if (winner != winners.cend()) {
-      result.push_back(-chips_adjusted[index] + amount_each_winner);
-    } else {
-      result.push_back(-chips_adjusted[index]);
-    }
-  }
-
-  return result;
-}
-
-auto get_next_round(enums::round round) -> std::tuple< enums::round, bool > {
-  auto result = static_cast< enums::round >(static_cast< int8_t >(round) + 1);
-  return std::make_tuple(result, result == enums::round::flop);
-}
 } // namespace v1
-
-template < typename Engine >
-class players_manager : public actual::engine_detail< Engine > {
-  public:
-  using actual::engine_detail< Engine >::engine_detail;
-
-  [[nodiscard]] auto get_players() const noexcept -> std::vector< player > {
-    return players_;
-  }
-
-  [[nodiscard]] auto get_player(int8_t index) -> player & {
-    return (index < 0 || index > players_.size()) ? default_player_ : *(players_.begin() + index);
-  }
-
-  auto set_players(const std::vector< player > &players) noexcept -> void {
-    players_ = players;
-  }
-
-  auto add_player(int32_t stack, const std::string &id) -> void {
-    for (const auto &player : players_) {
-      if (player.id == id) {
-        throw std::runtime_error{ "Player already in the game" };
-      }
-    }
-
-    auto traits = this->engine.get_engine_traits();
-    if (stack < traits.get_bb_bet() * traits.get_bb_mult()) {
-      throw std::runtime_error{ "Player stack less than game minimal stacksize" };
-    }
-
-    players_.emplace_back(false, stack, 0, 0, 0, enums::state::init, id);
-  }
-
-  auto remove_player(const std::string &id) -> void {
-    for (auto &player : players_) {
-      if (player.id == id) {
-        player.is_left = true;
-      }
-    }
-  }
-
-
-  private:
-  std::vector< player > players_;
-  player default_player_ = player(true, 0, 0, 0, 0, enums::state::none, "DEFAULT");
-};
 
 template < typename Engine >
 class actions_manager : public actual::engine_detail< Engine > {
@@ -842,4 +571,4 @@ class engine {
 };
 } // namespace pokerengine
 
-#endif // POKERENGINE_ENGINE_HPP
+#endif // POKERENGINE_ENGINE_DETAIL_HPP

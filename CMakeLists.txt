@@ -24,6 +24,11 @@ set(HEADER_FILES
         ${POKERENGINE_INCLUDE_DIR}/card/hand.hpp
         ${POKERENGINE_INCLUDE_DIR}/constants.hpp
         ${POKERENGINE_INCLUDE_DIR}/engine.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/action.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/engine_detail.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/player.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/pot.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/round.hpp
         ${POKERENGINE_INCLUDE_DIR}/enums.hpp
         ${POKERENGINE_INCLUDE_DIR}/evaluator/evaluation.hpp
         ${POKERENGINE_INCLUDE_DIR}/evaluator/evaluation_result.hpp

@@ -11,9 +11,6 @@
 #include "python/pyevaluation.hpp"
 #include "python/python.hpp"
 
-#define STRINGIFY(x) #x
-#define MACRO_STRINGIFY(x) STRINGIFY(x)
-
 namespace python {
 auto setup_all(py::module_ &module_) -> void {
   setup_pyconstants_main(module_);
@@ -32,9 +29,5 @@ PYBIND11_MODULE(pokerengine_core, module_) {
   module_.doc() = "Poker Library";
   python::setup_main(module_);
 
-#ifdef VERSION_INFO
-  module_.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
-#else
-  module_.attr("__version__") = "dev";
-#endif
+  module_.attr("__version__") = pokerengine::actual::version;
 }

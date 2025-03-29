@@ -12,8 +12,7 @@
 #include "pokerengine.hpp"
 
 namespace pokerengine::enums {
-enum class action : int8_t {
-  none = -1,
+enum class action : uint8_t {
   fold = 0,
   check = 1,
   call = 2,
@@ -21,8 +20,7 @@ enum class action : int8_t {
   raise = 4,
 };
 
-enum class combination : int8_t {
-  none = -1,
+enum class combination : uint8_t {
   no_pair = 0,
   one_pair = 1,
   two_pair = 2,
@@ -34,8 +32,7 @@ enum class combination : int8_t {
   straight_flush = 8,
 };
 
-enum class position : int8_t {
-  none = -1,
+enum class position : uint8_t {
   sb = 0,
   bb = 1,
   utg = 2,
@@ -61,8 +58,7 @@ enum class rank : uint8_t {
   ace = 12,
 };
 
-enum class round : int8_t {
-  none = -1,
+enum class round : uint8_t {
   preflop = 0,
   flop = 1,
   turn = 2,
@@ -70,8 +66,7 @@ enum class round : int8_t {
   showdown = 4,
 };
 
-enum class state : int8_t {
-  none = -1,
+enum class state : uint8_t {
   init = 0,
   out = 1,
   alive = 2,
