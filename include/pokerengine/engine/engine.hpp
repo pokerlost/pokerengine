@@ -183,7 +183,7 @@ class engine {
   }
 
   [[nodiscard]] auto get_pot() const noexcept -> uint32_t {
-    return get_flop_dealt() ? static_cast< int32_t >(get_default_pot() * constants::RAKE_MULTI< A, B >) :
+    return get_flop_dealt() ? static_cast< uint32_t >(get_default_pot() * constants::RAKE_MULTI< A, B >) :
                               get_default_pot();
   }
 
@@ -374,14 +374,14 @@ class engine {
     return players_;
   }
 
-  [[nodiscard]] auto get_default_pot() const noexcept -> int32_t {
+  [[nodiscard]] auto get_default_pot() const noexcept -> uint32_t {
     auto iterable = get_players();
-    std::vector< int32_t > chips_front;
+    std::vector< uint32_t > chips_bet;
     for (auto const &player : iterable) {
-      chips_front.push_back(player.front);
+      chips_bet.push_back(player.bet);
     }
 
-    auto reduce = std::reduce(chips_front.cbegin(), chips_front.cend());
+    auto reduce = std::reduce(chips_bet.cbegin(), chips_bet.cend());
     return get_flop_dealt() ? reduce - get_chips_to_return(iterable, get_highest_bet()).second : reduce;
   }
 

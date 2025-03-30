@@ -16,13 +16,26 @@ template < uint8_t A, uint8_t B >
 auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_postfix) -> void {
   py::class_< pokerengine::engine< A, B > >(module_, ("Engine" + pyclass_postfix).c_str(), py::module_local())
                   .def(py::init< const pokerengine::engine_traits & >(), py::arg("engine_traits"))
-                  .def("start", &pokerengine::engine< A, B >::start, py::arg("new_game"))
+                  .def("start", &pokerengine::engine< A, B >::start, py::arg("is_new_game"))
                   .def("stop", &pokerengine::engine< A, B >::stop)
+                  .def("add_player", &pokerengine::engine< A, B >::add_player, py::arg("stack"), py::arg("id"))
+                  .def("pay", &pokerengine::engine< A, B >::pay, py::arg("cards"))
+                  .def("pay_noshowdown", &pokerengine::engine< A, B >::pay_noshowdown)
+                  .def("execute", &pokerengine::engine< A, B >::execute, py::arg("player_action"))
                   .def_property("engine_traits",
                                 &pokerengine::engine< A, B >::get_engine_traits,
                                 &pokerengine::engine< A, B >::set_engine_traits)
                   .def_property_readonly("current", &pokerengine::engine< A, B >::get_current)
-                  .def_property_readonly("current_player", &pokerengine::engine< A, B >::get_current_player);
+                  .def_property_readonly("current_player", &pokerengine::engine< A, B >::get_current_player)
+                  .def_property_readonly("flop_dealt", &pokerengine::engine< A, B >::get_flop_dealt)
+                  .def_property_readonly("highest_bet", &pokerengine::engine< A, B >::get_highest_bet)
+                  .def_property_readonly("highest_game_bet", &pokerengine::engine< A, B >::get_highest_game_bet)
+                  .def_property_readonly("players", &pokerengine::engine< A, B >::get_players)
+                  .def_property_readonly("possible_actions", &pokerengine::engine< A, B >::get_possible_actions)
+                  .def_property_readonly("round", &pokerengine::engine< A, B >::get_round)
+                  .def_property_readonly("pot", &pokerengine::engine< A, B >::get_pot)
+                  .def_property_readonly("is_showdown", &pokerengine::engine< A, B >::is_showdown)
+                  .def_property_readonly("in_terminal_state", &pokerengine::engine< A, B >::in_terminal_state);
 }
 
 auto setup_pyengine_notemplate(py::module_ &module_) -> void {
