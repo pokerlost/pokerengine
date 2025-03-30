@@ -33,7 +33,6 @@ using is_card_or_rank = std::disjunction< is_card< T >, is_rank< T > >;
 template < typename T >
 inline const bool is_card_or_rank_v = is_card_or_rank< T >::value;
 
-namespace v1 {
 template < typename T, bool allow_duplicates, size_t N, std::enable_if_t< is_card_or_rank_v< T >, int > = 0 >
 class hand_helper {
   public:
@@ -96,9 +95,8 @@ class hand_helper {
 
   std::array< T, N > value_;
 };
-} // namespace v1
 
-using hand = actual::hand_helper< card, false, constants::HAND_SIZE >;
+using hand = hand_helper< card, false, constants::HAND_SIZE >;
 } // namespace pokerengine
 
 #endif // POKERENGINE_HAND_HPP

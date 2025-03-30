@@ -15,7 +15,7 @@
 #include "pokerengine.hpp"
 
 namespace pokerengine {
-auto get_chips_to_return(const std::vector< player > &players, int32_t highest_bet)
+auto get_chips_to_return(const std::vector< player > &players, uint32_t highest_bet)
                 -> std::pair< enums::position, int32_t > {
   if (std::count_if(players.cbegin(), players.cend(), [&](const auto &element) -> bool {
         return element.bet == highest_bet;
@@ -37,6 +37,52 @@ auto get_chips_to_return(const std::vector< player > &players, int32_t highest_b
   } else {
     return std::make_pair(enums::position{ 0 }, 0);
   }
+}
+
+auto get_chips_bet(const std::vector< player > &players, uint32_t highest_bet) -> std::vector< int32_t > {
+  std::vector< int32_t > chips;
+  for (const auto &player : players) {
+    chips.push_back(player.bet);
+  }
+
+  auto chips_return = get_chips_to_return(players, highest_bet);
+  if (chips_return.second == 0) {
+    return chips;
+  }
+  chips[static_cast< uint8_t >(chips_return.first)] -= chips_return.second;
+  return chips;
+}
+
+auto get_all_pots(const std::vector< player > &players, uint32_t highest_bet)
+                -> std::vector< std::tuple< std::vector< uint8_t >, int32_t, int32_t > > {
+  auto chips_bet = get_chips_bet(players, highest_bet);
+
+  std::vector< std::pair< int32_t, uint8_t > > chips_and_players;
+  for (size_t i = 0; i < chips_bet.size(); i++) {
+    chips_and_players.emplace_back(chips_bet[i], i);
+  }
+  std::sort(chips_and_players.begin(), chips_and_players.end(), [](const auto &lhs, const auto &rhs) -> bool {
+    return lhs.first > rhs.first;
+  });
+
+  std::vector< uint8_t > main_pot_players;
+  std::vector< std::tuple< std::vector< uint8_t >, int32_t, int32_t > > pots;
+
+  int32_t upper = chips_and_players[0].first;
+  std::for_each(chips_and_players.cbegin(), chips_and_players.cend(), [&](const auto &pair) -> void {
+    if (players[pair.second].state == enums::state::out) {
+      return;
+    } else if (int32_t lower = chips_bet[pair.second]; lower == upper) {
+      main_pot_players.push_back(pair.second);
+    } else if (players[pair.second].state == enums::state::allin) {
+      pots.emplace_back(main_pot_players, upper, lower);
+      upper = lower;
+      main_pot_players.push_back(pair.second);
+    }
+  });
+  pots.emplace_back(main_pot_players, upper, 0);
+
+  return pots;
 }
 
 template < uint8_t A = 0, uint8_t B = 1 >

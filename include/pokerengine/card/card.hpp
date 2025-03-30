@@ -17,7 +17,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include "constants.hpp"
 #include "enums.hpp"

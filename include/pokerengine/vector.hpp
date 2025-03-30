@@ -12,7 +12,6 @@
 
 #include "pokerengine.hpp"
 
-
 namespace pokerengine {
 template < typename T >
   requires(std::is_integral_v< T >)

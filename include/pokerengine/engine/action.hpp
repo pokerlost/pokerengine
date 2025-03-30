@@ -16,6 +16,7 @@
 #include "pokerengine.hpp"
 
 namespace pokerengine {
+namespace exceptions {
 class actions_error : public exception {
   public:
   using exception::exception;
@@ -23,6 +24,7 @@ class actions_error : public exception {
   protected:
   std::string class_name_ = "actions_error";
 };
+} // namespace exceptions
 
 struct player_action {
   uint32_t amount;
@@ -81,7 +83,7 @@ auto get_possible_actions(
                 uint32_t bet,
                 uint32_t stack) -> std::vector< player_action > {
   if (is_no_actions_available(round, state)) {
-    throw actions_error{ "No actions available, wrong game state or player state" };
+    throw exceptions::actions_error{ "No actions available, wrong game state or player state" };
   }
 
   std::vector< player_action > actions{};
@@ -148,7 +150,7 @@ auto execute_action(enums::action action, uint32_t amount, player &player, uint3
     player.state = !player.stack ? enums::state::allin : enums::state::alive;
   } break;
   default: {
-    throw actions_error{ "Got invalid action to execute" };
+    throw exceptions::actions_error{ "Got invalid action to execute" };
   }
   }
 
