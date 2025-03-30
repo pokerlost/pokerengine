@@ -16,13 +16,13 @@
 
 namespace pokerengine {
 auto get_chips_to_return(const std::vector< player > &players, uint32_t highest_bet)
-                -> std::pair< enums::position, int32_t > {
+                -> std::pair< enums::position, uint32_t > {
   if (std::count_if(players.cbegin(), players.cend(), [&](const auto &element) -> bool {
         return element.bet == highest_bet;
       }) < 2) {
-    std::vector< uint32_t > chips_front;
+    std::vector< uint32_t > chips_bet;
     std::for_each(players.cbegin(), players.cend(), [&](const auto &element) -> void {
-      chips_front.push_back(element.bet);
+      chips_bet.push_back(element.bet);
     });
 
 
@@ -32,15 +32,15 @@ auto get_chips_to_return(const std::vector< player > &players, uint32_t highest_
                       return element.bet == highest_bet;
                     }));
 
-    std::sort(chips_front.begin(), chips_front.end(), std::greater{});
-    return std::make_pair(enums::position(position), highest_bet - chips_front[1]);
+    std::sort(chips_bet.begin(), chips_bet.end(), std::greater{});
+    return std::make_pair(enums::position(position), highest_bet - chips_bet[1]);
   } else {
     return std::make_pair(enums::position{ 0 }, 0);
   }
 }
 
-auto get_chips_bet(const std::vector< player > &players, uint32_t highest_bet) -> std::vector< int32_t > {
-  std::vector< int32_t > chips;
+auto get_chips_bet(const std::vector< player > &players, uint32_t highest_bet) -> std::vector< uint32_t > {
+  std::vector< uint32_t > chips;
   for (const auto &player : players) {
     chips.push_back(player.bet);
   }
@@ -54,10 +54,10 @@ auto get_chips_bet(const std::vector< player > &players, uint32_t highest_bet) -
 }
 
 auto get_all_pots(const std::vector< player > &players, uint32_t highest_bet)
-                -> std::vector< std::tuple< std::vector< uint8_t >, int32_t, int32_t > > {
+                -> std::vector< std::tuple< std::vector< uint8_t >, uint32_t, uint32_t > > {
   auto chips_bet = get_chips_bet(players, highest_bet);
 
-  std::vector< std::pair< int32_t, uint8_t > > chips_and_players;
+  std::vector< std::pair< uint32_t, uint8_t > > chips_and_players;
   for (size_t i = 0; i < chips_bet.size(); i++) {
     chips_and_players.emplace_back(chips_bet[i], i);
   }
@@ -66,13 +66,13 @@ auto get_all_pots(const std::vector< player > &players, uint32_t highest_bet)
   });
 
   std::vector< uint8_t > main_pot_players;
-  std::vector< std::tuple< std::vector< uint8_t >, int32_t, int32_t > > pots;
+  std::vector< std::tuple< std::vector< uint8_t >, uint32_t, uint32_t > > pots;
 
-  int32_t upper = chips_and_players[0].first;
+  uint32_t upper = chips_and_players[0].first;
   std::for_each(chips_and_players.cbegin(), chips_and_players.cend(), [&](const auto &pair) -> void {
     if (players[pair.second].state == enums::state::out) {
       return;
-    } else if (int32_t lower = chips_bet[pair.second]; lower == upper) {
+    } else if (uint32_t lower = chips_bet[pair.second]; lower == upper) {
       main_pot_players.push_back(pair.second);
     } else if (players[pair.second].state == enums::state::allin) {
       pots.emplace_back(main_pot_players, upper, lower);
@@ -87,24 +87,24 @@ auto get_all_pots(const std::vector< player > &players, uint32_t highest_bet)
 
 template < uint8_t A = 0, uint8_t B = 1 >
   requires(A >= 0 && B > 0 && A < B)
-auto get_adjust_pot(const std::vector< player > &players, int32_t highest_bet, bool flop_dealt) -> int32_t {
-  std::vector< int32_t > chips_front;
+auto get_adjust_pot(const std::vector< player > &players, uint32_t highest_bet, bool flop_dealt) -> uint32_t {
+  std::vector< uint32_t > chips_bet;
   std::for_each(players.cbegin(), players.cend(), [&](auto const &element) {
-    chips_front.push_back(element.front);
+    chips_bet.push_back(element.bet);
   });
 
-  auto pot = std::reduce(chips_front.cbegin(), chips_front.cend());
+  auto pot = std::reduce(chips_bet.cbegin(), chips_bet.cend());
   if (flop_dealt && constants::RAKE< A, B > != 0.0) {
     auto chips_returned = get_chips_to_return(players, highest_bet).second;
-    return static_cast< int32_t >((pot - chips_returned) * constants::RAKE< A, B > + chips_returned);
+    return static_cast< uint32_t >((pot - chips_returned) * constants::RAKE< A, B > + chips_returned);
   } else {
     return pot;
   }
 }
 
-auto adjust_side_pot(const std::vector< player > &players, int32_t upper_bound, int32_t lower_bound) noexcept
-                -> std::vector< int32_t > {
-  std::vector< int32_t > result;
+auto adjust_side_pot(const std::vector< player > &players, uint32_t upper_bound, uint32_t lower_bound) noexcept
+                -> std::vector< uint32_t > {
+  std::vector< uint32_t > result;
   for (auto const &player : players) {
     auto chips = player.bet;
     result.push_back(
@@ -123,15 +123,15 @@ auto get_side_pot_redistribution(
                 const cards &cards,
                 const std::vector< uint8_t > &players,
                 bool flop_dealt,
-                int32_t upper_bound,
-                int32_t lower_bound) -> std::vector< int32_t > {
+                uint32_t upper_bound,
+                uint32_t lower_bound) -> std::vector< int32_t > {
   auto winners = get_evaluation_result(cards, players);
   auto chips_adjusted = adjust_side_pot(ps, upper_bound, lower_bound);
 
-  auto total_pot = static_cast< int32_t >(
-                  std::accumulate(chips_adjusted.cbegin(), chips_adjusted.cend(), 0) *
+  auto total_pot = static_cast< uint32_t >(
+                  std::accumulate(chips_adjusted.cbegin(), chips_adjusted.cend(), 0u) *
                   (flop_dealt ? constants::RAKE_MULTI< A, B > : 1.0f));
-  int32_t amount_each_winner = total_pot / static_cast< int32_t >(winners.size());
+  uint32_t amount_each_winner = total_pot / static_cast< uint32_t >(winners.size());
 
   std::vector< int32_t > result;
   for (size_t index = 0; index < ps.size(); index++) {

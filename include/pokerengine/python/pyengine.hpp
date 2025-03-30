@@ -18,7 +18,7 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                   .def(py::init< const pokerengine::engine_traits & >(), py::arg("engine_traits"))
                   .def("start", &pokerengine::engine< A, B >::start, py::arg("is_new_game"))
                   .def("stop", &pokerengine::engine< A, B >::stop)
-                  .def("add_player", &pokerengine::engine< A, B >::add_player, py::arg("stack"), py::arg("id"))
+                  .def("add_player", &pokerengine::engine< A, B >::join_player, py::arg("stack"), py::arg("id"))
                   .def("pay", &pokerengine::engine< A, B >::pay, py::arg("cards"))
                   .def("pay_noshowdown", &pokerengine::engine< A, B >::pay_noshowdown)
                   .def("execute", &pokerengine::engine< A, B >::execute, py::arg("player_action"))
@@ -93,7 +93,7 @@ auto setup_pyengine_all(py::module_ module_, const std::string &pyclass_postfix)
 }
 
 auto setup_pyengine_main(py::module_ &module_) -> void {
-  setup_pyengine_all< 0, 1 >(module_, "Rake01");
+  setup_pyengine_all< 0, 1 >(module_, std::string{ "Rake01" });
 }
 } // namespace python
 

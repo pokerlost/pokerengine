@@ -13,7 +13,7 @@ namespace python {
 auto setup_pypokerengine_all(py::module_ &module_) -> void {
   auto pokerengine = module_.def_submodule("pokerengine");
 
-  py::class_< pokerengine::exceptions::exception >(pokerengine, "PokerEngineException", py::module_local())
+  py::class_< pokerengine::exceptions::exception >(pokerengine, "PokerEngineError", py::module_local())
                   .def(py::init< std::string >(), py::arg("message"))
                   .def("__str__",
                        [](pokerengine::exceptions::exception &self) -> std::string {

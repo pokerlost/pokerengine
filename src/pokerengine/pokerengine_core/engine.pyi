@@ -68,7 +68,7 @@ class EngineTraits:
     min_raise: int
     """Game minimal raise size."""
 
-    def __init__(self, sb_bet: int, bb_bet: int, bb_mult: int, min_raise: int = -1) -> None: ...
+    def __init__(self, sb_bet: int, bb_bet: int, bb_mult: int, min_raise: int = 0) -> None: ...
 
 class Engine:
     engine_traits: EngineTraits

@@ -36,19 +36,19 @@ class engine_traits {
     min_raise_ = min_raise > 0 ? min_raise : bb_bet_ * 2;
   }
 
-  [[nodiscard]] auto get_sb_bet() const noexcept -> uint16_t {
+  [[nodiscard]] auto get_sb_bet() noexcept -> uint16_t {
     return sb_bet_;
   }
 
-  [[nodiscard]] auto get_bb_bet() const noexcept -> uint16_t {
+  [[nodiscard]] auto get_bb_bet() noexcept -> uint16_t {
     return bb_bet_;
   }
 
-  [[nodiscard]] auto get_bb_mult() const noexcept -> uint8_t {
+  [[nodiscard]] auto get_bb_mult() noexcept -> uint8_t {
     return bb_mult_;
   }
 
-  [[nodiscard]] auto get_min_raise() const noexcept -> uint32_t {
+  [[nodiscard]] auto get_min_raise() noexcept -> uint32_t {
     return min_raise_;
   }
 
@@ -126,23 +126,23 @@ class engine {
     reset();
   }
 
-  [[nodiscard]] auto get_current() const noexcept -> enums::position {
+  [[nodiscard]] auto get_current() noexcept -> enums::position {
     return current_;
   }
 
-  [[nodiscard]] auto get_current_player() const noexcept -> player {
+  [[nodiscard]] auto get_current_player() noexcept -> player & {
     return get_player(static_cast< uint8_t >(get_current()));
   }
 
-  [[nodiscard]] auto get_engine_traits() const noexcept -> engine_traits {
+  [[nodiscard]] auto get_engine_traits() noexcept -> engine_traits & {
     return engine_traits_;
   }
 
-  [[nodiscard]] auto get_flop_dealt() const noexcept -> bool {
+  [[nodiscard]] auto get_flop_dealt() noexcept -> bool {
     return flop_dealt_;
   }
 
-  [[nodiscard]] auto get_highest_bet() const -> uint32_t {
+  [[nodiscard]] auto get_highest_bet() -> uint32_t {
     auto iterable = get_players();
     auto max = std::max_element(
                     iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -152,7 +152,7 @@ class engine {
     return max == iterable.end() ? 0 : max->round_bet;
   }
 
-  [[nodiscard]] auto get_highest_game_bet() const -> uint32_t {
+  [[nodiscard]] auto get_highest_game_bet() -> uint32_t {
     auto iterable = get_players();
     auto max = std::max_element(
                     iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -162,11 +162,11 @@ class engine {
     return max == iterable.end() ? 0 : max->bet;
   }
 
-  [[nodiscard]] auto get_players() const noexcept -> std::vector< player > {
+  [[nodiscard]] auto get_players() noexcept -> std::vector< player > & {
     return players_;
   }
 
-  [[nodiscard]] auto get_possible_actions() const -> std::vector< player_action > {
+  [[nodiscard]] auto get_possible_actions() -> std::vector< player_action > {
     auto player = get_current_player();
     return ::pokerengine::get_possible_actions(
                     get_round(),
@@ -179,11 +179,11 @@ class engine {
                     player.stack);
   }
 
-  [[nodiscard]] auto get_round() const noexcept -> enums::round {
+  [[nodiscard]] auto get_round() noexcept -> enums::round {
     return round_;
   }
 
-  [[nodiscard]] auto get_pot() const noexcept -> uint32_t {
+  [[nodiscard]] auto get_pot() noexcept -> uint32_t {
     return get_flop_dealt() ? static_cast< uint32_t >(get_default_pot() * constants::RAKE_MULTI< A, B >) :
                               get_default_pot();
   }
@@ -192,7 +192,7 @@ class engine {
     engine_traits_ = engine_traits;
   }
 
-  auto add_player(uint32_t stack, const std::string &id) -> void {
+  auto join_player(uint32_t stack, const std::string &id) -> void {
     for (const auto &player : get_players()) {
       if (player.id == id) {
         throw exceptions::engine_error{ "Player already in the game" };
@@ -205,11 +205,11 @@ class engine {
     add_player(player{ .stack = stack, .bet = 0, .round_bet = 0, .state = enums::state::init, .id = id });
   }
 
-  [[nodiscard]] auto in_terminal_state() const -> bool {
+  [[nodiscard]] auto in_terminal_state() -> bool {
     return get_number_alive() > 1;
   }
 
-  [[nodiscard]] auto is_showdown() const noexcept -> bool {
+  [[nodiscard]] auto is_showdown() noexcept -> bool {
     return get_round() == enums::round::showdown;
   }
 
@@ -322,7 +322,7 @@ class engine {
   }
 
   protected:
-  [[nodiscard]] auto get_actionable() const -> int {
+  [[nodiscard]] auto get_actionable() -> int {
     auto iterable = get_players();
     return std::accumulate(iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
       return (element.state == enums::state::init ||
@@ -332,14 +332,14 @@ class engine {
     });
   }
 
-  [[nodiscard]] auto get_future_actionable() const -> int {
+  [[nodiscard]] auto get_future_actionable() -> int {
     auto iterable = get_players();
     return std::accumulate(iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
       return element.state != enums::state::out && element.state != enums::state::allin ? value + 1 : value;
     });
   }
 
-  [[nodiscard]] auto get_number_alive() const -> int {
+  [[nodiscard]] auto get_number_alive() -> int {
     auto iterable = get_players();
     return std::accumulate(iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
       return element.state != enums::state::out ? value + 1 : value;
@@ -347,14 +347,6 @@ class engine {
   }
 
   private:
-  [[nodiscard]] auto get_current_player() noexcept -> player & {
-    return get_player(static_cast< uint8_t >(get_current()));
-  }
-
-  [[nodiscard]] auto get_engine_traits() noexcept -> engine_traits & {
-    return engine_traits_;
-  }
-
   auto get_player(uint8_t index) -> player & {
     if (index < 0 || index > get_players().size()) {
       throw exceptions::engine_error{ "Invalid index" };
@@ -363,19 +355,7 @@ class engine {
     return *(get_players().begin() + index);
   }
 
-  [[nodiscard]] auto get_player(uint8_t index) const -> player {
-    if (index < 0 || index > get_players().size()) {
-      throw std::length_error{ "Invalid index" };
-    }
-
-    return *(get_players().cbegin() + index);
-  }
-
-  [[nodiscard]] auto get_players() noexcept -> std::vector< player > & {
-    return players_;
-  }
-
-  [[nodiscard]] auto get_default_pot() const noexcept -> uint32_t {
+  [[nodiscard]] auto get_default_pot() noexcept -> uint32_t {
     auto iterable = get_players();
     std::vector< uint32_t > chips_bet;
     for (auto const &player : iterable) {
