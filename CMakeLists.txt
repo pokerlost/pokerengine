@@ -23,9 +23,8 @@ set(HEADER_FILES
         ${POKERENGINE_INCLUDE_DIR}/card/cards.hpp
         ${POKERENGINE_INCLUDE_DIR}/card/hand.hpp
         ${POKERENGINE_INCLUDE_DIR}/constants.hpp
-        ${POKERENGINE_INCLUDE_DIR}/engine.hpp
         ${POKERENGINE_INCLUDE_DIR}/engine/action.hpp
-        ${POKERENGINE_INCLUDE_DIR}/engine/engine_detail.hpp
+        ${POKERENGINE_INCLUDE_DIR}/engine/engine.hpp
         ${POKERENGINE_INCLUDE_DIR}/engine/player.hpp
         ${POKERENGINE_INCLUDE_DIR}/engine/pot.hpp
         ${POKERENGINE_INCLUDE_DIR}/engine/round.hpp
@@ -40,6 +39,8 @@ set(HEADER_FILES
         ${POKERENGINE_INCLUDE_DIR}/python/pyengine.hpp
         ${POKERENGINE_INCLUDE_DIR}/python/pyenums.hpp
         ${POKERENGINE_INCLUDE_DIR}/python/pyevaluation.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pyexceptions.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pypokerengine.hpp
         ${POKERENGINE_INCLUDE_DIR}/python/python.hpp
         ${POKERENGINE_INCLUDE_DIR}/string.hpp
         ${POKERENGINE_INCLUDE_DIR}/types.hpp

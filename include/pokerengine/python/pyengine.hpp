@@ -40,7 +40,7 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
 
 auto setup_pyengine_notemplate(py::module_ &module_) -> void {
   py::class_< pokerengine::engine_traits >(module_, "EngineTraits", py::module_local())
-                  .def(py::init< int32_t, int32_t, uint8_t, int32_t >(),
+                  .def(py::init< uint16_t, uint16_t, uint8_t, uint32_t >(),
                        py::arg("sb_bet"),
                        py::arg("bb_bet"),
                        py::arg("bb_mult"),
@@ -58,20 +58,16 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                                 &pokerengine::engine_traits::get_min_raise,
                                 &pokerengine::engine_traits::set_min_raise);
   py::class_< pokerengine::player >(module_, "Player", py::module_local())
-                  .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state, std::string >(),
-                       py::arg("is_left"),
+                  .def(py::init< uint32_t, uint32_t, uint32_t, pokerengine::enums::state, std::string >(),
                        py::arg("stack"),
-                       py::arg("behind"),
-                       py::arg("front"),
+                       py::arg("bet"),
                        py::arg("round_bet"),
                        py::arg("state"),
                        py::arg("id"))
                   .def(py::self == py::self, py::arg("other")) // NOLINT
                   .def("__str__", [](pokerengine::player &self) -> std::string { return std::string{ self }; })
-                  .def_readwrite("is_left", &pokerengine::player::is_left)
                   .def_readwrite("stack", &pokerengine::player::stack)
-                  .def_readwrite("behind", &pokerengine::player::behind)
-                  .def_readwrite("front", &pokerengine::player::front)
+                  .def_readwrite("bet", &pokerengine::player::bet)
                   .def_readwrite("round_bet", &pokerengine::player::round_bet)
                   .def_readwrite("state", &pokerengine::player::state)
                   .def_readwrite("id", &pokerengine::player::id);

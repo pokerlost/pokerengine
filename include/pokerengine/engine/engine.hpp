@@ -16,6 +16,7 @@
 #include "pokerengine.hpp"
 #include "pot.hpp"
 #include "round.hpp"
+#include "vector.hpp"
 
 namespace pokerengine {
 namespace exceptions {
@@ -30,7 +31,7 @@ class engine_error : public exception {
 
 class engine_traits {
   public:
-  engine_traits(uint16_t sb_bet, uint16_t bb_bet, uint8_t bb_mult, uint32_t min_raise = -1)
+  engine_traits(uint16_t sb_bet, uint16_t bb_bet, uint8_t bb_mult, uint32_t min_raise = 0)
           : sb_bet_{ sb_bet }, bb_bet_{ bb_bet }, bb_mult_{ bb_mult } {
     min_raise_ = min_raise > 0 ? min_raise : bb_bet_ * 2;
   }
@@ -248,7 +249,7 @@ class engine {
 
     std::vector< int32_t > results;
     std::for_each(iterable.begin(), iterable.end(), [&, index = 0](auto &player) mutable -> void {
-      auto result = results.emplace_back(index++ == winner ? -player.front + adjusted_pot : -player.front);
+      auto result = results.emplace_back(index++ == winner ? -player.bet + adjusted_pot : -player.bet);
       player.stack += result;
     });
     set_players(iterable);

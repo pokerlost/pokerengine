@@ -10,7 +10,7 @@
 #include "python/python.hpp"
 
 namespace python {
-auto setup_constants_all(py::module_ &module_) -> void {
+auto setup_pyconstants_all(py::module_ &module_) -> void {
   auto constants = module_.def_submodule("constants");
 
   constants.attr("MASK_RANKS_NUMBER") = pokerengine::constants::MASK_RANKS_NUMBER;
@@ -35,7 +35,7 @@ auto setup_constants_all(py::module_ &module_) -> void {
 }
 
 auto setup_pyconstants_main(py::module_ &module_) -> void {
-  setup_constants_all(module_);
+  setup_pyconstants_all(module_);
 }
 } // namespace python
 

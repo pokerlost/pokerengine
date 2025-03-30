@@ -103,7 +103,7 @@ auto setup_suit_enum(py::module_ &module_) -> void {
                   .value("SPADES", pokerengine::enums::suit ::spades);
 }
 
-auto setup_enums_all(py::module_ &module_) -> void {
+auto setup_pyenums_all(py::module_ &module_) -> void {
   auto enums = module_.def_submodule("enums");
 
   setup_action_enum(enums);
@@ -116,7 +116,7 @@ auto setup_enums_all(py::module_ &module_) -> void {
 }
 
 auto setup_pyenums_main(py::module_ &module_) -> void {
-  setup_enums_all(module_);
+  setup_pyenums_all(module_);
 }
 } // namespace python
 
