@@ -4,8 +4,8 @@ from typing import List, Sequence, overload
 
 import pybind11_stubgen.typing_ext
 import typing_extensions
-from pokerengine.pokerengine_core.enums.rank import RankE
-from pokerengine.pokerengine_core.enums.suit import SuitE
+from pokerengine.pokerengine_core.enums.rank import Rank as RankEnum
+from pokerengine.pokerengine_core.enums.rank import Suit as SuitEnum
 
 class Rank:
     """
@@ -13,7 +13,7 @@ class Rank:
     """
 
     @overload
-    def __init__(self, value: RankE) -> None: ...
+    def __init__(self, value: RankEnum) -> None: ...
     @overload
     def __init__(self, value: str) -> None: ...
     def __eq__(self, other: Rank) -> bool: ...
@@ -35,7 +35,7 @@ class Rank:
         :return: Rank as integer
         """
     @property
-    def enum(self) -> RankE:
+    def enum(self) -> RankEnum:
         """
         Use this method to get card rank.
 
@@ -48,7 +48,7 @@ class Suit:
     """
 
     @overload
-    def __init__(self, value: SuitE) -> None: ...
+    def __init__(self, value: SuitEnum) -> None: ...
     @overload
     def __init__(self, value: str) -> None: ...
     def __eq__(self, other: Suit) -> bool: ...
@@ -70,7 +70,7 @@ class Suit:
         :return: Suit as integer
         """
     @property
-    def enum(self) -> SuitE:
+    def enum(self) -> SuitEnum:
         """
         Use this method to get card suit.
 
@@ -85,7 +85,7 @@ class Card:
     @overload
     def __init__(self, rank: Rank, suit: Suit) -> None: ...
     @overload
-    def __init__(self, rank: RankE, suit: SuitE) -> None: ...
+    def __init__(self, rank: RankEnum, suit: SuitEnum) -> None: ...
     @overload
     def __init__(self, card: int) -> None: ...
     @overload

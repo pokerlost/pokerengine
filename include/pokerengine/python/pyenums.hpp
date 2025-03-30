@@ -14,7 +14,6 @@ auto setup_action_enum(py::module_ &module_) -> void {
   auto action = module_.def_submodule("action");
 
   py::enum_< pokerengine::enums::action >(action, "Action", py::module_local())
-                  .value("NONE", pokerengine::enums::action::none)
                   .value("FOLD", pokerengine::enums::action::fold)
                   .value("CHECK", pokerengine::enums::action::check)
                   .value("CALL", pokerengine::enums::action::call)
@@ -26,7 +25,6 @@ auto setup_combination_enum(py::module_ &module_) -> void {
   auto combination = module_.def_submodule("combination");
 
   py::enum_< pokerengine::enums::combination >(combination, "Combination", py::module_local())
-                  .value("NONE", pokerengine::enums::combination::none)
                   .value("NO_PAIR", pokerengine::enums::combination::no_pair)
                   .value("ONE_PAIR", pokerengine::enums::combination::one_pair)
                   .value("TWO_PAIR", pokerengine::enums::combination::two_pair)
@@ -41,7 +39,6 @@ auto setup_position_enum(py::module_ &module_) -> void {
   auto position = module_.def_submodule("position");
 
   py::enum_< pokerengine::enums::position >(position, "Position", py::module_local())
-                  .value("NONE", pokerengine::enums::position::none)
                   .value("SB", pokerengine::enums::position::sb)
                   .value("BB", pokerengine::enums::position::bb)
                   .value("UTG", pokerengine::enums::position::utg)
@@ -74,7 +71,6 @@ auto setup_round_enum(py::module_ &module_) -> void {
   auto round = module_.def_submodule("round");
 
   py::enum_< pokerengine::enums::round >(round, "Round", py::module_local())
-                  .value("NONE", pokerengine::enums::round::none)
                   .value("PREFLOP", pokerengine::enums::round::preflop)
                   .value("FLOP", pokerengine::enums::round::flop)
                   .value("TURN", pokerengine::enums::round::turn)
@@ -86,7 +82,6 @@ auto setup_state_enum(py::module_ &module_) -> void {
   auto state = module_.def_submodule("state");
 
   py::enum_< pokerengine::enums::state >(state, "State", py::module_local())
-                  .value("NONE", pokerengine::enums::state::none)
                   .value("INIT", pokerengine::enums::state::init)
                   .value("OUT", pokerengine::enums::state::out)
                   .value("ALIVE", pokerengine::enums::state::alive)

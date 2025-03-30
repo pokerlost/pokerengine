@@ -205,11 +205,11 @@ class engine {
     add_player(player{ .stack = stack, .bet = 0, .round_bet = 0, .state = enums::state::init, .id = id });
   }
 
-  [[nodiscard]] auto is_showdown() const -> bool {
+  [[nodiscard]] auto in_terminal_state() const -> bool {
     return get_number_alive() > 1;
   }
 
-  [[nodiscard]] auto in_terminal_state() const noexcept -> bool {
+  [[nodiscard]] auto is_showdown() const noexcept -> bool {
     return get_round() == enums::round::showdown;
   }
 

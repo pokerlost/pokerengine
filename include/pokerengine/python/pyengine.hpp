@@ -34,8 +34,8 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                   .def_property_readonly("possible_actions", &pokerengine::engine< A, B >::get_possible_actions)
                   .def_property_readonly("round", &pokerengine::engine< A, B >::get_round)
                   .def_property_readonly("pot", &pokerengine::engine< A, B >::get_pot)
-                  .def_property_readonly("is_showdown", &pokerengine::engine< A, B >::is_showdown)
-                  .def_property_readonly("in_terminal_state", &pokerengine::engine< A, B >::in_terminal_state);
+                  .def_property_readonly("showdown", &pokerengine::engine< A, B >::is_showdown)
+                  .def_property_readonly("terminal_state", &pokerengine::engine< A, B >::in_terminal_state);
 }
 
 auto setup_pyengine_notemplate(py::module_ &module_) -> void {

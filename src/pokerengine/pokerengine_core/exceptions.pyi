@@ -1,0 +1,6 @@
+from __future__ import annotations
+
+from pokerengine.pokerengine_core.pokerengine import PokerEngineError
+
+class ActionsError(PokerEngineError): ...
+class EngineError(PokerEngineError): ...

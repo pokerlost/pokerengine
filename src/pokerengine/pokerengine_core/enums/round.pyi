@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from enum import Enum
 
-class RoundE(Enum):
+class Round(Enum):
     """
     Represents game round.
     """
 
-    NONE = -1
     PREFLOP = 0
     FLOP = 1
     TURN = 2

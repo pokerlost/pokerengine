@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from enum import Enum
 
-class CombinationE(Enum):
+class Combination(Enum):
     """
     Represents poker combination.
     """
 
-    NONE = -1
     NO_PAIR = 0
     ONE_PAIR = 1
     TWO_PAIR = 2

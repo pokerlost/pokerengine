@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class SuitE(Enum):
+class Suit(Enum):
     """
     Represents card suit.
     """

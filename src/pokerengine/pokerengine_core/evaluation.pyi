@@ -4,7 +4,7 @@ from typing import List, Tuple, overload
 
 from pokerengine.pokerengine_core.card.card import Rank
 from pokerengine.pokerengine_core.card.cards import Cards
-from pokerengine.pokerengine_core.enums.combination import CombinationE
+from pokerengine.pokerengine_core.enums.combination import Combination
 
 class Result:
     """
@@ -14,7 +14,7 @@ class Result:
     @overload
     def __init__(
         self,
-        type: CombinationE,
+        type: Combination,
         major: int,
         minor: int,
         kickers: int,

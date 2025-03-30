@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class RankE(Enum):
+class Rank(Enum):
     """
     Represents card rank.
     """

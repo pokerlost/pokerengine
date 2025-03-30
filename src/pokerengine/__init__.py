@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pokerengine.pokerengine_core import __doc__, __version__
 
-from . import card, constants, engine, enums, evaluation
+from . import card, constants, engine, enums, evaluation, exceptions, pokerengine
 
 __all__ = (
     "__doc__",
@@ -16,4 +16,6 @@ __all__ = (
     "engine",
     "enums",
     "evaluation",
+    "exceptions",
+    "pokerengine",
 )
