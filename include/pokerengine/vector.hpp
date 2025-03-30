@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 10/9/23.
-//
-
 #ifndef POKERENGINE_VECTOR_HPP
 #define POKERENGINE_VECTOR_HPP
 
@@ -43,5 +39,4 @@ auto operator+(const std::vector< T > &lhs, const std::vector< T > &rhs) -> std:
   return result;
 }
 } // namespace pokerengine
-
 #endif // POKERENGINE_VECTOR_HPP

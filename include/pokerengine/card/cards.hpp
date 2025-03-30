@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/23.
-//
-
 #ifndef POKERENGINE_CARDS_HPP
 #define POKERENGINE_CARDS_HPP
 
@@ -81,5 +77,4 @@ class cards {
   std::vector< hand > hands_;
 };
 } // namespace pokerengine
-
 #endif // POKERENGINE_CARDS_HPP

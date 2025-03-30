@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/12/23.
-//
-
 #ifndef POKERENGINE_STRING_HPP
 #define POKERENGINE_STRING_HPP
 
@@ -26,5 +22,4 @@ auto copy(const std::vector< T > &value) -> std::string {
   return stream.str();
 }
 } // namespace pokerengine::string
-
 #endif // POKERENGINE_STRING_HPP

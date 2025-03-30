@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/8/23.
-//
-
 #ifndef POKERENGINE_ENUMS_HPP
 #define POKERENGINE_ENUMS_HPP
 
@@ -153,5 +149,4 @@ template <>
   }
   }
 }
-
 #endif // POKERENGINE_ENUMS_HPP

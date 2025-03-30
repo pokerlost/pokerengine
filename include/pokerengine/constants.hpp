@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/9/23.
-//
-
 #ifndef POKERENGINE_CONSTANTS_HPP
 #define POKERENGINE_CONSTANTS_HPP
 
@@ -51,5 +47,4 @@ const std::array< const std::string, 9 > COMBINATIONS = {
   "a flush,",   "a full house,", "four of a kind,", "a straight flush,"
 };
 } // namespace pokerengine::constants
-
 #endif // POKERENGINE_CONSTANTS_HPP

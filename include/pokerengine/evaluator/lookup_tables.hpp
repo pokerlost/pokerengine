@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/23.
-//
-
 #ifndef POKERENGINE_LOOKUP_TABLES_HPP
 #define POKERENGINE_LOOKUP_TABLES_HPP
 
@@ -1235,5 +1231,4 @@ const uint16_t poker_table_top5[] = {
   7936, 7936
 };
 } // namespace pokerengine
-
 #endif // POKERENGINE_LOOKUP_TABLES_HPP

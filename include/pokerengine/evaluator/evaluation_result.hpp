@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 10/9/23.
-//
-
 #ifndef POKERENGINE_EVALUATION_RESULT_HPP
 #define POKERENGINE_EVALUATION_RESULT_HPP
 
@@ -41,5 +37,4 @@ auto get_evaluation_result_one(const cards &cards, uint8_t from) -> result {
   return evaluate_unsafe(card_set{ cards.get_board() }.combine(cards.get_hands()[from].as_cardset()));
 }
 } // namespace pokerengine
-
 #endif // POKERENGINE_EVALUATION_RESULT_HPP

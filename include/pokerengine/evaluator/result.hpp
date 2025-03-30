@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/23.
-//
-
 #ifndef POKERENGINE_RESULT_HPP
 #define POKERENGINE_RESULT_HPP
 
@@ -138,5 +134,4 @@ class result {
   uint32_t result_;
 };
 } // namespace pokerengine
-
 #endif // POKERENGINE_RESULT_HPP

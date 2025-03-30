@@ -1,7 +1,3 @@
-//
-// Created by user on 3/30/25.
-//
-
 #ifndef POKERENGINE_PYPOKERENGINE_HPP
 #define POKERENGINE_PYPOKERENGINE_HPP
 

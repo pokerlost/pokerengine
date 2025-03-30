@@ -1,7 +1,3 @@
-//
-// Created by user on 3/29/25.
-//
-
 #ifndef POKERENGINE_ROUND_HPP
 #define POKERENGINE_ROUND_HPP
 

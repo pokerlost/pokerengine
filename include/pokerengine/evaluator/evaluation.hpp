@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/23.
-//
-
 #ifndef POKERENGINE_EVALUATION_HPP
 #define POKERENGINE_EVALUATION_HPP
 
@@ -106,5 +102,4 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
   return result{ enums::combination::no_pair, 0, 0, poker_table_top5[mask_all_cards] };
 }
 } // namespace pokerengine
-
 #endif // POKERENGINE_EVALUATION_HPP

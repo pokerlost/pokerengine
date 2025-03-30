@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/1/23.
-//
-
 #ifndef POKERENGINE_PYENUMS_HPP
 #define POKERENGINE_PYENUMS_HPP
 
@@ -114,5 +110,4 @@ auto setup_pyenums_main(py::module_ &module_) -> void {
   setup_pyenums_all(module_);
 }
 } // namespace python
-
-#endif // POKERENGINE_ENUMS_HPP
+#endif // POKERENGINE_PYENUMS_HPP

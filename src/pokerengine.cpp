@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 10/29/23.
-//
-
 #include "card/card.hpp"
 
 #include "python/pycard.hpp"

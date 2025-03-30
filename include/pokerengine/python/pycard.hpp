@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/1/23.
-//
-
 #ifndef POKERENGINE_PYCARD_HPP
 #define POKERENGINE_PYCARD_HPP
 

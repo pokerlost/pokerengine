@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/2/23.
-//
-
 #ifndef POKERENGINE_POKERENGINE_HPP
 #define POKERENGINE_POKERENGINE_HPP
 

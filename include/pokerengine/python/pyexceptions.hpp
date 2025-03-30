@@ -1,7 +1,3 @@
-//
-// Created by user on 3/30/25.
-//
-
 #ifndef POKERENGINE_PYEXCEPTIONS_HPP
 #define POKERENGINE_PYEXCEPTIONS_HPP
 

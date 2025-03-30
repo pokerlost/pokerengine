@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/constants::HAND_SIZE3.
-//
-
 #ifndef POKERENGINE_HAND_HPP
 #define POKERENGINE_HAND_HPP
 
@@ -98,5 +94,4 @@ class hand_helper {
 
 using hand = hand_helper< card, false, constants::HAND_SIZE >;
 } // namespace pokerengine
-
 #endif // POKERENGINE_HAND_HPP

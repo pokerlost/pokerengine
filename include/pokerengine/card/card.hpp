@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 7/4/23.
-//
-
 #ifndef POKERENGINE_CARD_HPP
 #define POKERENGINE_CARD_HPP
 
@@ -249,5 +245,4 @@ class card_generator {
   std::uniform_int_distribution< int > dist_suit_;
 };
 } // namespace pokerengine
-
 #endif // POKERENGINE_CARD_HPP

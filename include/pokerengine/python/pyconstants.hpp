@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/9/23.
-//
-
 #ifndef POKERENGINE_PYCONSTANTS_HPP
 #define POKERENGINE_PYCONSTANTS_HPP
 
@@ -38,5 +34,4 @@ auto setup_pyconstants_main(py::module_ &module_) -> void {
   setup_pyconstants_all(module_);
 }
 } // namespace python
-
-#endif // POKERENGINE_CONSTANTS_HPP
+#endif // POKERENGINE_PYCONSTANTS_HPP

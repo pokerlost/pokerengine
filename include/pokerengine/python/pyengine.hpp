@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/15/23.
-//
-
 #ifndef POKERENGINE_PYENGINE_HPP
 #define POKERENGINE_PYENGINE_HPP
 
@@ -96,5 +92,4 @@ auto setup_pyengine_main(py::module_ &module_) -> void {
   setup_pyengine_all< 0, 1 >(module_, std::string{ "Rake01" });
 }
 } // namespace python
-
-#endif // POKERENGINE_ENGINE_HPP
+#endif // POKERENGINE_PYENGINE_HPP

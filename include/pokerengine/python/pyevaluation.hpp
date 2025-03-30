@@ -1,7 +1,3 @@
-//
-// Created by copper_boy on 11/2/23.
-//
-
 #ifndef POKERENGINE_PYEVALUATION_HPP
 #define POKERENGINE_PYEVALUATION_HPP
 
@@ -54,5 +50,4 @@ auto setup_pyevaluation_main(py::module_ &module_) -> void {
   setup_pyevaluation_all(module_);
 }
 } // namespace python
-
 #endif // POKERENGINE_PYEVALUATION_HPP
