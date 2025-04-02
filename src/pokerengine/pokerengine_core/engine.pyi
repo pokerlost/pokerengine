@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from pokerengine.pokerengine_core.card.cards import Cards
 from pokerengine.pokerengine_core.enums.action import Action
@@ -72,7 +72,15 @@ class EngineTraits:
 
 class Engine:
     engine_traits: EngineTraits
-    def __init__(self, traits: EngineTraits) -> None: ...
+
+    def __init__(
+        self,
+        engine_traits: EngineTraits,
+        current: Optional[Position] = None,
+        round: Optional[Round] = None,
+        flop_dealt: Optional[bool] = None,
+        players: Optional[List[Player]] = None,
+    ) -> None: ...
     @property
     def current(self) -> Position:
         """

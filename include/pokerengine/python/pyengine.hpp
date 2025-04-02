@@ -8,10 +8,21 @@
 #include "python/python.hpp"
 
 namespace python {
-template < uint8_t A, uint8_t B >
+template < uint8_t A = 0, uint8_t B = 1 >
+  requires(A >= 0 && B > 0 && A < B)
 auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_postfix) -> void {
   py::class_< pokerengine::engine< A, B > >(module_, ("Engine" + pyclass_postfix).c_str(), py::module_local())
                   .def(py::init< const pokerengine::engine_traits & >(), py::arg("engine_traits"))
+                  .def(py::init< const pokerengine::engine_traits &,
+                                 pokerengine::enums::position,
+                                 pokerengine::enums::round,
+                                 bool,
+                                 const std::vector< pokerengine::player > & >(),
+                       py::arg("engine_traits"),
+                       py::arg("current"),
+                       py::arg("round"),
+                       py::arg("flop_dealt"),
+                       py::arg("players"))
                   .def("start", &pokerengine::engine< A, B >::start, py::arg("is_new_game"))
                   .def("stop", &pokerengine::engine< A, B >::stop)
                   .def("add_player", &pokerengine::engine< A, B >::join_player, py::arg("stack"), py::arg("id"))
@@ -80,7 +91,8 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                   .def_readwrite("position", &pokerengine::player_action::position);
 }
 
-template < uint8_t A, uint8_t B >
+template < uint8_t A = 0, uint8_t B = 1 >
+  requires(A >= 0 && B > 0 && A < B)
 auto setup_pyengine_all(py::module_ module_, const std::string &pyclass_postfix) -> void {
   auto engine = module_.def_submodule("engine");
 

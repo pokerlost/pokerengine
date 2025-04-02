@@ -32,19 +32,19 @@ class engine_traits {
     min_raise_ = min_raise > 0 ? min_raise : bb_bet_ * 2;
   }
 
-  [[nodiscard]] auto get_sb_bet() noexcept -> uint16_t {
+  [[nodiscard]] auto get_sb_bet() const noexcept -> uint16_t {
     return sb_bet_;
   }
 
-  [[nodiscard]] auto get_bb_bet() noexcept -> uint16_t {
+  [[nodiscard]] auto get_bb_bet() const noexcept -> uint16_t {
     return bb_bet_;
   }
 
-  [[nodiscard]] auto get_bb_mult() noexcept -> uint8_t {
+  [[nodiscard]] auto get_bb_mult() const noexcept -> uint8_t {
     return bb_mult_;
   }
 
-  [[nodiscard]] auto get_min_raise() noexcept -> uint32_t {
+  [[nodiscard]] auto get_min_raise() const noexcept -> uint32_t {
     return min_raise_;
   }
 
@@ -77,6 +77,18 @@ template < uint8_t A = 0, uint8_t B = 1 >
 class engine {
   public:
   engine() = delete;
+
+  engine(const engine_traits &engine_traits,
+         enums::position current,
+         enums::round round,
+         bool flop_dealt,
+         const std::vector< player > &players)
+          : engine(engine_traits) {
+    set_current(current);
+    set_round(round);
+    set_flop_dealt(flop_dealt);
+    set_players(players);
+  }
 
   explicit engine(const engine_traits &engine_traits) : engine_traits_{ engine_traits } {
   }
