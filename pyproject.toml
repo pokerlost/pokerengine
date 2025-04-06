@@ -4,11 +4,14 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pokerengine"
-version = "1.9.1"
+version = "1.9.2"
 description = "Poker Library"
 readme = "README.md"
 authors = [
     {name = "raindinners"}
+]
+dependencies = [
+    "pydantic~=2.11.2",
 ]
 requires-python = ">=3.8"
 keywords = [

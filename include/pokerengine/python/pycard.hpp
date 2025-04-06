@@ -23,11 +23,25 @@ auto setup_pycard_all(py::module_ &module_) -> void {
                   .def(py::self != py::self, py::arg("other")) // NOLINT
                   .def(py::self > py::self, py::arg("other"))  // NOLINT
                   .def(py::self < py::self, py::arg("other"))  // NOLINT
-                  .def("__str__", [](pokerengine::rank &self) -> std::string { return std::string{ self }; })
                   .def("__int__", [](pokerengine::rank &self) -> int { return self.as_bitset(); })
+                  .def_property_readonly(
+                                  "string",
+                                  [](pokerengine::rank &self) -> std::string { return std::string{ self }; })
                   .def_property_readonly("rank", &pokerengine::rank::get_value)
                   .def_property_readonly("enum", &pokerengine::rank::get_enum);
-  py::class_< pokerengine::suit >(card, "Suit", py::module_local()); // NOLINT
+  py::class_< pokerengine::suit >(card, "Suit", py::module_local())
+                  .def(py::init< pokerengine::enums::suit >(), py::arg("value"))
+                  .def(py::init< char >(), py::arg("value"))
+                  .def(py::self == py::self, py::arg("other")) // NOLINT
+                  .def(py::self != py::self, py::arg("other")) // NOLINT
+                  .def(py::self > py::self, py::arg("other"))  // NOLINT
+                  .def(py::self < py::self, py::arg("other"))  // NOLINT
+                  .def("__int__", [](pokerengine::suit &self) -> int { return self.as_bitset(); })
+                  .def_property_readonly(
+                                  "string",
+                                  [](pokerengine::suit &self) -> std::string { return std::string{ self }; })
+                  .def_property_readonly("suit", &pokerengine::suit::get_value)
+                  .def_property_readonly("enum", &pokerengine::suit::get_enum);
 
   py::class_< pokerengine::card >(card, "Card", py::module_local())
                   .def(py::init< const pokerengine::rank &, const pokerengine::suit & >(),
@@ -42,9 +56,11 @@ auto setup_pycard_all(py::module_ &module_) -> void {
                   .def(py::self != py::self, py::arg("other")) // NOLINT
                   .def(py::self > py::self, py::arg("other"))  // NOLINT
                   .def(py::self < py::self, py::arg("other"))  // NOLINT
-                  .def("__str__", [](pokerengine::card &self) -> std::string { return std::string{ self }; })
                   .def("__int__",
                        [](pokerengine::card &self) -> pokerengine::types::bit_set { return self.as_bitset(); })
+                  .def_property_readonly(
+                                  "string",
+                                  [](pokerengine::card &self) -> std::string { return std::string{ self }; })
                   .def_property_readonly("card", &pokerengine::card::get_card)
                   .def_property_readonly("rank", &pokerengine::card::get_rank)
                   .def_property_readonly("suit", &pokerengine::card::get_suit);
@@ -109,8 +125,10 @@ auto setup_pycard_all(py::module_ &module_) -> void {
                   .def(py::self != py::self, py::arg("other")) // NOLINT
                   .def(py::self > py::self, py::arg("other"))  // NOLINT
                   .def(py::self < py::self, py::arg("other"))  // NOLINT
-                  .def("__str__", [](pokerengine::cards &self) -> std::string { return std::string{ self }; })
                   .def("board_n", &pokerengine::cards::get_board_n)
+                  .def_property_readonly(
+                                  "string",
+                                  [](pokerengine::cards &self) -> std::string { return std::string{ self }; })
                   .def_property_readonly("board", &pokerengine::cards::get_board)
                   .def_property_readonly("hands", &pokerengine::cards::get_hands);
 
@@ -122,10 +140,12 @@ auto setup_pycard_all(py::module_ &module_) -> void {
                   .def(py::self != py::self, py::arg("other")) // NOLINT
                   .def(py::self > py::self, py::arg("other"))  // NOLINT
                   .def(py::self < py::self, py::arg("other"))  // NOLINT
-                  .def("__str__", [](pokerengine::hand &self) -> std::string { return std::string{ self }; })
                   .def("__int__",
                        [](pokerengine::hand &self) -> pokerengine::types::bit_set { return self.as_bitset(); })
                   .def("as_cardset", &pokerengine::hand::as_cardset)
+                  .def_property_readonly(
+                                  "string",
+                                  [](pokerengine::hand &self) -> std::string { return std::string{ self }; })
                   .def_property_readonly("value", &pokerengine::hand::get_value);
 }
 
