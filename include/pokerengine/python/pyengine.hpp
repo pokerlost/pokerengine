@@ -2,6 +2,7 @@
 #define POKERENGINE_PYENGINE_HPP
 
 #include <pybind11/operators.h>
+#include <pybind11/stl.h>
 
 #include "engine/engine.hpp"
 
@@ -65,19 +66,25 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                                 &pokerengine::engine_traits::get_min_raise,
                                 &pokerengine::engine_traits::set_min_raise);
   py::class_< pokerengine::player >(module_, "Player", py::module_local())
-                  .def(py::init< uint32_t, uint32_t, uint32_t, pokerengine::enums::state, std::string >(),
+                  .def(py::init< uint32_t,
+                                 uint32_t,
+                                 uint32_t,
+                                 pokerengine::enums::state,
+                                 std::string,
+                                 std::optional< std::map< std::string, py::object > > >(),
                        py::arg("stack"),
                        py::arg("bet"),
                        py::arg("round_bet"),
                        py::arg("state"),
-                       py::arg("id"))
-                  .def(py::self == py::self, py::arg("other")) // NOLINT
+                       py::arg("id"),
+                       py::arg("parameters"))
                   .def("__str__", [](pokerengine::player &self) -> std::string { return std::string{ self }; })
                   .def_readwrite("stack", &pokerengine::player::stack)
                   .def_readwrite("bet", &pokerengine::player::bet)
                   .def_readwrite("round_bet", &pokerengine::player::round_bet)
                   .def_readwrite("state", &pokerengine::player::state)
-                  .def_readwrite("id", &pokerengine::player::id);
+                  .def_readwrite("id", &pokerengine::player::id)
+                  .def_readwrite("parameters", &pokerengine::player::parameters);
   py::class_< pokerengine::player_action >(module_, "PlayerAction", py::module_local())
                   .def(py::init< int32_t, pokerengine::enums::action, pokerengine::enums::position >(),
                        py::arg("amount"),

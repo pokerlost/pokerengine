@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import abc
-from typing import Any, Generic, List, Self, TypeVar
+from typing import Any, Dict, Generic, List, Optional, Self, TypeVar
 
-from pokerengine import enums
+from pokerengine import enums_schema
 from pokerengine.card import Card as CardOriginal
 from pokerengine.card import Cards as CardsOriginal
 from pokerengine.card import Hand as HandOriginal
@@ -15,16 +15,28 @@ from pokerengine.engine import Player as PlayerOriginal
 from pokerengine.engine import PlayerAction as PlayerActionOriginal
 from pokerengine.pokerengine_core.enums.action import Action
 from pokerengine.pokerengine_core.enums.position import Position
-from pokerengine.pokerengine_core.enums.rank import Rank as RankEnum
 from pokerengine.pokerengine_core.enums.round import Round
 from pokerengine.pokerengine_core.enums.state import State
-from pokerengine.pokerengine_core.enums.suit import Suit as SuitEnum
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import ConfigDict
 
+__all__ = (
+    "Card",
+    "Cards",
+    "Hand",
+    "Rank",
+    "Suit",
+    "EngineRake01",
+    "EngineTraits",
+    "Player",
+    "PlayerAction",
+)
+
+BaseModelType = TypeVar("BaseModelType", bound=PydanticBaseModel)
 PokerEngineType = TypeVar("PokerEngineType", bound=Any)
 
 
-class _BaseModel(abc.ABC, BaseModel, Generic[PokerEngineType]):
+class BaseModel(abc.ABC, PydanticBaseModel, Generic[PokerEngineType]):
     @classmethod
     def from_original(cls, value: PokerEngineType) -> Self:
         return cls.model_validate(value)
@@ -40,8 +52,8 @@ class _BaseModel(abc.ABC, BaseModel, Generic[PokerEngineType]):
     )
 
 
-class Rank(_BaseModel[RankOriginal]):
-    enum: RankEnum
+class Rank(BaseModel[RankOriginal]):
+    enum: enums_schema.Rank
     rank: int
     string: str
 
@@ -57,8 +69,8 @@ class Rank(_BaseModel[RankOriginal]):
         return RankOriginal(self.string)
 
 
-class Suit(_BaseModel[SuitOriginal]):
-    enum: SuitEnum
+class Suit(BaseModel[SuitOriginal]):
+    enum: enums_schema.Suit
     suit: int
     string: str
 
@@ -74,7 +86,7 @@ class Suit(_BaseModel[SuitOriginal]):
         return SuitOriginal(self.string)
 
 
-class Card(_BaseModel[CardOriginal]):
+class Card(BaseModel[CardOriginal]):
     card: int
     string: str
 
@@ -82,7 +94,7 @@ class Card(_BaseModel[CardOriginal]):
         return CardOriginal(self.string)
 
 
-class Hand(_BaseModel[HandOriginal]):
+class Hand(BaseModel[HandOriginal]):
     front: Card
     back: Card
 
@@ -97,7 +109,7 @@ class Hand(_BaseModel[HandOriginal]):
         return HandOriginal(self.front.string + self.back.string)
 
 
-class Cards(_BaseModel[CardsOriginal]):
+class Cards(BaseModel[CardsOriginal]):
     board: List[Card]
     hands: List[Hand]
 
@@ -121,7 +133,7 @@ class Cards(_BaseModel[CardsOriginal]):
         )
 
 
-class EngineTraits(_BaseModel[EngineTraitsOriginal]):
+class EngineTraits(BaseModel[EngineTraitsOriginal]):
     sb_bet: int
     bb_bet: int
     bb_mult: int
@@ -136,12 +148,13 @@ class EngineTraits(_BaseModel[EngineTraitsOriginal]):
         )
 
 
-class Player(_BaseModel[PlayerOriginal]):
+class Player(BaseModel[PlayerOriginal], Generic[BaseModelType]):
     id: str
     stack: int
     bet: int
     round_bet: int
-    state: enums.State
+    state: enums_schema.State
+    parameters: Optional[Dict[str, object]] = None
 
     @classmethod
     def from_original(cls, value: PlayerOriginal) -> Self:
@@ -151,6 +164,7 @@ class Player(_BaseModel[PlayerOriginal]):
             bet=value.bet,
             round_bet=value.round_bet,
             state=value.state.value,
+            parameters=value.parameters,
         )
 
     def to_original(self) -> PlayerOriginal:
@@ -160,17 +174,18 @@ class Player(_BaseModel[PlayerOriginal]):
             bet=self.bet,
             round_bet=self.round_bet,
             state=State(self.state.value),
+            parameters=self.parameters,
         )
 
 
-class PlayerAction(_BaseModel[PlayerActionOriginal]):
-    action: enums.Action
-    position: enums.Position
+class PlayerAction(BaseModel[PlayerActionOriginal]):
+    action: enums_schema.Action
+    position: enums_schema.Position
     amount: int
 
     @classmethod
     def from_original(cls, value: PlayerActionOriginal) -> Self:
-        return PlayerActionOriginal(
+        return PlayerAction(
             action=value.action.value,
             position=value.position.value,
             amount=value.amount,
@@ -184,10 +199,10 @@ class PlayerAction(_BaseModel[PlayerActionOriginal]):
         )
 
 
-class EngineRake01(_BaseModel[EngineRake01Original]):
+class EngineRake01(BaseModel[EngineRake01Original]):
     engine_traits: EngineTraits
-    current: enums.Position
-    round: enums.Round
+    current: enums_schema.Position
+    round: enums_schema.Round
     flop_dealt: bool
     players: List[Player]
 

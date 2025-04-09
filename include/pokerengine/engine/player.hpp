@@ -1,11 +1,13 @@
 #ifndef POKERENGINE_PLAYER_HPP
 #define POKERENGINE_PLAYER_HPP
 
+#include <any>
 #include <cstdint>
 #include <string>
 #include <vector>
 
 #include <magic_enum/magic_enum.hpp>
+#include <pybind11/pybind11.h>
 
 #include "enums.hpp"
 #include "pokerengine.hpp"
@@ -18,6 +20,8 @@ struct player {
   enums::state state;
 
   std::string id;
+
+  std::optional< std::map< std::string, pybind11::object > > parameters{ std::nullopt };
 
   auto operator<=>(const player &other) const noexcept -> std::strong_ordering = delete;
   auto operator==(const player &other) const noexcept -> bool = default;

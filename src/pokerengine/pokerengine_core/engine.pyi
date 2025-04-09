@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
-from pokerengine.pokerengine_core.card.cards import Cards
+from pokerengine.pokerengine_core.card import Cards
 from pokerengine.pokerengine_core.enums.action import Action
 from pokerengine.pokerengine_core.enums.position import Position
 from pokerengine.pokerengine_core.enums.round import Round
 from pokerengine.pokerengine_core.enums.state import State
-from pokerengine.pokerengine_core.evaluation.result import Result
+from pokerengine.pokerengine_core.evaluation import Result
 
 class Player:
     """
@@ -24,7 +24,7 @@ class Player:
     """Player state in round."""
     id: str
     """Player ID."""
-
+    parameters: Optional[Dict[str, object]] = None
     def __init__(
         self,
         stack: int,
@@ -32,8 +32,8 @@ class Player:
         round_bet: int,
         state: State,
         id: str,
+        parameters: Optional[Dict[str, object]] = None,
     ) -> None: ...
-    def __eq__(self, other: Player) -> bool: ...
     def __str__(self) -> str: ...
 
 class PlayerAction:
