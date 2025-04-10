@@ -41,29 +41,18 @@
 
 ## About
 
-
 > A Texas Hold'em variant poker engine that allows you to calculate hand combinations separately from the game, create rooms and manage the game.
 > The first of its kind Python engine that enables the entire process of playing Texas Hold'em Poker.
 
 ### Built With
 
-> C++
-<br>
-> pybind11
-<br>
-> Python
-<br>
+> C++ pybind11 Python
 
 ## Getting Started
 
 ### Prerequisites
 
-> g++11
-<br>
-> cmake
-<br>
-> python3.1*
-
+> g++11 cmake python3.1*
 ### Installation
 
 To install project follow:
@@ -98,7 +87,6 @@ Please read [our contribution guidelines](docs/CONTRIBUTING.md), and thank you f
 The original setup of this repository is by [raindinners](https://github.com/raindinners).
 
 For a full list of all authors and contributors, see [the contributors page](https://github.com/raindinners/pokerengine/contributors).
-
 
 ## License
 
