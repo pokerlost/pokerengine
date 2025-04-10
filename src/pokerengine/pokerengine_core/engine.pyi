@@ -171,11 +171,21 @@ class Engine:
 
         :return: :class:`None`
         """
-    def add_player(self, stack: int, id: str) -> None:
+    def add_player(
+        self, stack: int, id: str, parameters: Optional[Dict[str, object]] = None
+    ) -> Player:
         """
         Use this method to add player in the game.
 
         :param stack: Player stack in the game
+        :param id: Player ID
+        :param parameters: Player game parameters for storing data.
+        :return: :class:`None`
+        """
+    def remove_player(self, id: str) -> None:
+        """
+        Use this method to remove player from game.
+
         :param id: Player ID
         :return: :class:`None`
         """

@@ -26,7 +26,12 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                        py::arg("players"))
                   .def("start", &pokerengine::engine< A, B >::start, py::arg("is_new_game"))
                   .def("stop", &pokerengine::engine< A, B >::stop)
-                  .def("add_player", &pokerengine::engine< A, B >::join_player, py::arg("stack"), py::arg("id"))
+                  .def("add_player",
+                       &pokerengine::engine< A, B >::join_player,
+                       py::arg("stack"),
+                       py::arg("id"),
+                       py::arg("parameters"))
+                  .def("remove_player", &pokerengine::engine< A, B >::left_player, py::arg("id"))
                   .def("pay", &pokerengine::engine< A, B >::pay, py::arg("cards"))
                   .def("pay_noshowdown", &pokerengine::engine< A, B >::pay_noshowdown)
                   .def("execute", &pokerengine::engine< A, B >::execute, py::arg("player_action"))

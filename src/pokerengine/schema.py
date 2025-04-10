@@ -66,7 +66,7 @@ class Rank(BaseModel[RankOriginal]):
         )
 
     def to_original(self) -> RankOriginal:
-        return RankOriginal(self.string)
+        return RankOriginal(self.string.lower())
 
 
 class Suit(BaseModel[SuitOriginal]):
@@ -83,7 +83,7 @@ class Suit(BaseModel[SuitOriginal]):
         )
 
     def to_original(self) -> SuitOriginal:
-        return SuitOriginal(self.string)
+        return SuitOriginal(self.string.lower())
 
 
 class Card(BaseModel[CardOriginal]):
@@ -91,7 +91,7 @@ class Card(BaseModel[CardOriginal]):
     string: str
 
     def to_original(self) -> CardOriginal:
-        return CardOriginal(self.string)
+        return CardOriginal(self.string.lower())
 
 
 class Hand(BaseModel[HandOriginal]):
@@ -234,6 +234,7 @@ class EngineRake01(BaseModel[EngineRake01Original]):
                     bet=player.bet,
                     round_bet=player.round_bet,
                     state=State(player.state.value),
+                    parameters=player.parameters,
                 )
                 for player in self.players
             ],

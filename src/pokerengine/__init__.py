@@ -15,6 +15,7 @@ from . import (
     evaluation,
     exceptions,
     pokerengine,
+    pretty_string,
     schema,
 )
 
@@ -29,5 +30,6 @@ __all__ = (
     "evaluation",
     "exceptions",
     "pokerengine",
+    "pretty_string",
     "schema",
 )

@@ -200,7 +200,11 @@ class engine {
     engine_traits_ = engine_traits;
   }
 
-  auto join_player(uint32_t stack, const std::string &id) -> void {
+  auto join_player(
+                  uint32_t stack,
+                  const std::string &id,
+                  std::optional< std::map< std::string, pybind11::object > > parameters = std::nullopt)
+                  -> player {
     for (const auto &player : get_players()) {
       if (player.id == id) {
         throw exceptions::engine_error{ "Player already in the game" };
@@ -210,7 +214,25 @@ class engine {
       throw exceptions::engine_error{ "Player stack less than game minimal stacksize" };
     }
 
-    add_player(player{ .stack = stack, .bet = 0, .round_bet = 0, .state = enums::state::init, .id = id });
+    auto new_player = player{
+      .stack = stack, .bet = 0, .round_bet = 0, .state = enums::state::init, .id = id, .parameters = parameters
+    };
+    add_player(new_player);
+    return new_player;
+  }
+
+  auto left_player(const std::string &id) {
+    if (!in_terminal_state()) {
+      throw exceptions::engine_error{ "Invalid state to remove player" };
+    }
+
+    auto iterable = get_players();
+    std::vector< player > new_players;
+    std::copy_if(iterable.cbegin(),
+                 iterable.cend(),
+                 std::back_inserter(new_players),
+                 [&](const auto &element) -> bool { return element.id != id; });
+    set_players(new_players);
   }
 
   [[nodiscard]] auto in_terminal_state() -> bool {
@@ -403,7 +425,6 @@ class engine {
   auto set_players(const std::vector< player > &players) noexcept -> void {
     players_ = players;
   }
-
 
   auto set_round(enums::round value) noexcept -> void {
     round_ = value;

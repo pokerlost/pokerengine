@@ -34,6 +34,6 @@ class exception : std::exception {
 };
 } // namespace exceptions
 
-constexpr std::string version = "1.9.3.1";
+constexpr std::string version = "1.9.4";
 } // namespace pokerengine
 #endif // POKERENGINE_POKERENGINE_HPP
