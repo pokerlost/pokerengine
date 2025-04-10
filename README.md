@@ -30,7 +30,6 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
 - [Usage](#usage)
-- [Roadmap](#roadmap)
 - [Support](#support)
 - [Contributing](#contributing)
 - [Authors & contributors](#authors--contributors)
@@ -42,67 +41,50 @@
 
 ## About
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions -- just the ones relevant to your project.
 
-<details>
-<summary>Screenshots</summary>
-<br>
-
-> **[?]**
-> Please provide your screenshots here.
-
-|                               Home Page                               |                               Login Page                               |
-| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
-
-</details>
+> A Texas Hold'em variant poker engine that allows you to calculate hand combinations separately from the game, create rooms and manage the game.
+> The first of its kind Python engine that enables the entire process of playing Texas Hold'em Poker.
 
 ### Built With
 
-> **[?]**
-> Please provide the technologies that are used in the project.
+> C++
+<br>
+> pybind11
+<br>
+> Python
+<br>
 
 ## Getting Started
 
 ### Prerequisites
 
-> **[?]**
-> What are the project requirements/dependencies?
+> g++11
+<br>
+> cmake
+<br>
+> python3.1*
 
 ### Installation
 
-> **[?]**
-> Describe how to install and get started with the project.
+To install project follow:
+```shell
+python -m venv venv
+source venv/bin/activate
+python -m build .
+pip install .
+```
 
 ## Usage
 
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
-
-## Roadmap
-
-See the [open issues](https://github.com/raindinners/pokerengine/issues) for a list of proposed features (and known issues).
-
-- [Top Feature Requests](https://github.com/raindinners/pokerengine/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/raindinners/pokerengine/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Newest Bugs](https://github.com/raindinners/pokerengine/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+The usage examples currently stores at `examples`.
 
 ## Support
-
-> **[?]**
-> Provide additional ways to contact the project maintainer/maintainers.
 
 Reach out to the maintainer at one of the following places:
 
 - [GitHub issues](https://github.com/raindinners/pokerengine/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
 - Contact options listed on [this GitHub profile](https://github.com/raindinners)
-
+- Contact with [Telegram](https://mlosu.t.me)
 
 ## Contributing
 
@@ -113,7 +95,7 @@ Please read [our contribution guidelines](docs/CONTRIBUTING.md), and thank you f
 
 ## Authors & contributors
 
-The original setup of this repository is by [Raindinners](https://github.com/raindinners).
+The original setup of this repository is by [raindinners](https://github.com/raindinners).
 
 For a full list of all authors and contributors, see [the contributors page](https://github.com/raindinners/pokerengine/contributors).
 
