@@ -53,7 +53,7 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
 
 auto setup_pyengine_notemplate(py::module_ &module_) -> void {
   py::class_< pokerengine::engine_traits >(module_, "EngineTraits", py::module_local())
-                  .def(py::init< uint16_t, uint16_t, uint8_t, uint32_t >(),
+                  .def(py::init< uint16_t, uint16_t, uint8_t, int32_t >(),
                        py::arg("sb_bet"),
                        py::arg("bb_bet"),
                        py::arg("bb_mult"),
@@ -71,9 +71,9 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                                 &pokerengine::engine_traits::get_min_raise,
                                 &pokerengine::engine_traits::set_min_raise);
   py::class_< pokerengine::player >(module_, "Player", py::module_local())
-                  .def(py::init< uint32_t,
-                                 uint32_t,
-                                 uint32_t,
+                  .def(py::init< int32_t,
+                                 int32_t,
+                                 int32_t,
                                  pokerengine::enums::state,
                                  std::string,
                                  std::optional< std::map< std::string, py::object > > >(),
