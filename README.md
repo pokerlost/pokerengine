@@ -54,6 +54,7 @@
 
 To install project follow:
 ```shell
+git clone https://github.com/pokerlost/pokerengine && cd pokerengine
 python -m venv venv
 source venv/bin/activate
 python -m build .
