@@ -8,14 +8,14 @@ version = "1.9.5"
 description = "Poker Library"
 readme = "README.md"
 authors = [
-    {name = "raindinners"}
+    {name = "pokerlost"}
 ]
 dependencies = [
     "pydantic~=2.11.2",
 ]
 requires-python = ">=3.8"
 keywords = [
-    "raindinners",
+    "pokerlost",
     "engine",
     "poker",
     "texas",
