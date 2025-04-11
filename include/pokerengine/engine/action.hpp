@@ -120,8 +120,13 @@ auto is_action_allowed(
                    }) != actions.cend());
 }
 
-auto execute_action(enums::action action, uint32_t amount, player &player, uint32_t min_raise, uint32_t highest_bet)
-                -> uint32_t {
+auto execute_action(
+                enums::action action,
+                uint32_t amount,
+                player &player,
+                uint32_t min_raise,
+                uint32_t highest_bet,
+                uint32_t bb_bet) -> uint32_t {
   uint32_t new_min_raise = min_raise;
 
   switch (action) {
@@ -134,7 +139,7 @@ auto execute_action(enums::action action, uint32_t amount, player &player, uint3
   case enums::action::call:
   case enums::action::bet:
   case enums::action::raise: {
-    uint32_t raise_size = amount + player.bet - highest_bet;
+    uint32_t raise_size = amount + player.round_bet + bb_bet - highest_bet;
     if (raise_size > min_raise) {
       new_min_raise = raise_size;
     }
@@ -144,6 +149,7 @@ auto execute_action(enums::action action, uint32_t amount, player &player, uint3
     player.round_bet += amount;
 
     player.state = !player.stack ? enums::state::allin : enums::state::alive;
+
   } break;
   default: {
     throw exceptions::actions_error{ "Got invalid action to execute" };

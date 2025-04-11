@@ -304,7 +304,8 @@ class engine {
                                    player_action.amount,
                                    player,
                                    get_engine_traits().get_min_raise(),
-                                   get_highest_bet()));
+                                   get_highest_bet(),
+                                   get_engine_traits().get_bb_bet()));
 
     auto iterable = get_players();
     if (auto actions = get_actionable(); get_number_alive() < constants::MIN_PLAYERS ||
