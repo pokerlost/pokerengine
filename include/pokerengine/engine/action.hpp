@@ -23,7 +23,7 @@ class actions_error : public exception {
 } // namespace exceptions
 
 struct player_action {
-  uint32_t amount;
+  int32_t amount;
   enums::action action;
   enums::position position;
 
@@ -43,15 +43,15 @@ auto is_no_actions_available(enums::round round, enums::state state) noexcept ->
   return (state == enums::state::out || state == enums::state::allin) || round == enums::round::showdown;
 }
 
-auto is_check_available(uint32_t highest_bet, uint32_t bet) {
+auto is_check_available(int32_t highest_bet, int32_t bet) {
   return !highest_bet || bet == highest_bet;
 }
 
-auto is_bet_available(uint32_t bb_bet, uint32_t highest_bet, uint32_t stack) noexcept -> bool {
+auto is_bet_available(int32_t bb_bet, int32_t highest_bet, int32_t stack) noexcept -> bool {
   return !highest_bet && stack > bb_bet;
 }
 
-auto is_call_available(uint32_t highest_bet, uint32_t bet, uint32_t stack) noexcept -> bool {
+auto is_call_available(int32_t highest_bet, int32_t bet, int32_t stack) noexcept -> bool {
   if (bet + stack <= highest_bet) {
     return true;
   }
@@ -59,7 +59,7 @@ auto is_call_available(uint32_t highest_bet, uint32_t bet, uint32_t stack) noexc
   return highest_bet && (bet < highest_bet && (bet + stack) >= highest_bet);
 }
 
-auto is_raise_available(enums::state state, uint32_t highest_bet, uint32_t min_raise, uint32_t bet, uint32_t stack)
+auto is_raise_available(enums::state state, int32_t highest_bet, int32_t min_raise, int32_t bet, int32_t stack)
                 -> bool {
   if ((bet + stack) <= highest_bet) {
     return false;
@@ -74,10 +74,10 @@ auto get_possible_actions(
                 enums::position player,
                 enums::state state,
                 uint16_t bb_bet,
-                uint32_t min_raise,
-                uint32_t highest_bet,
-                uint32_t bet,
-                uint32_t stack) -> std::vector< player_action > {
+                int32_t min_raise,
+                int32_t highest_bet,
+                int32_t bet,
+                int32_t stack) -> std::vector< player_action > {
   if (is_no_actions_available(round, state)) {
     throw exceptions::actions_error{ "No actions available, wrong game state or player state" };
   }
@@ -107,8 +107,8 @@ auto is_action_allowed(
                 enums::position player,
                 enums::position position,
                 enums::action action,
-                uint32_t amount,
-                uint32_t min_raise) -> bool {
+                int32_t amount,
+                int32_t min_raise) -> bool {
   return position == player &&
                   (std::find_if(actions.cbegin(), actions.cend(), [&](const auto &element) -> bool {
                      return (element.action == action && element.amount == amount) ||
@@ -122,12 +122,12 @@ auto is_action_allowed(
 
 auto execute_action(
                 enums::action action,
-                uint32_t amount,
+                int32_t amount,
                 player &player,
-                uint32_t min_raise,
-                uint32_t highest_bet,
-                uint32_t bb_bet) -> uint32_t {
-  uint32_t new_min_raise = min_raise;
+                int32_t min_raise,
+                int32_t highest_bet,
+                int32_t bb_bet) -> int32_t {
+  int32_t new_min_raise = min_raise;
 
   switch (action) {
   case enums::action::fold: {

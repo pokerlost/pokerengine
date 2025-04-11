@@ -27,7 +27,7 @@ class engine_error : public exception {
 
 class engine_traits {
   public:
-  engine_traits(uint16_t sb_bet, uint16_t bb_bet, uint8_t bb_mult, uint32_t min_raise = 0)
+  engine_traits(uint16_t sb_bet, uint16_t bb_bet, uint8_t bb_mult, int32_t min_raise = 0)
           : sb_bet_{ sb_bet }, bb_bet_{ bb_bet }, bb_mult_{ bb_mult } {
     min_raise_ = min_raise > 0 ? min_raise : bb_bet_ * 2;
   }
@@ -44,7 +44,7 @@ class engine_traits {
     return bb_mult_;
   }
 
-  [[nodiscard]] auto get_min_raise() const noexcept -> uint32_t {
+  [[nodiscard]] auto get_min_raise() const noexcept -> int32_t {
     return min_raise_;
   }
 
@@ -60,7 +60,7 @@ class engine_traits {
     bb_mult_ = value;
   }
 
-  auto set_min_raise(uint32_t value) noexcept -> void {
+  auto set_min_raise(int32_t value) noexcept -> void {
     min_raise_ = value;
   }
 
@@ -69,7 +69,7 @@ class engine_traits {
   uint16_t bb_bet_;
   uint8_t bb_mult_;
 
-  uint32_t min_raise_;
+  int32_t min_raise_;
 };
 
 template < uint8_t A = 0, uint8_t B = 1 >
@@ -150,7 +150,7 @@ class engine {
     return flop_dealt_;
   }
 
-  [[nodiscard]] auto get_highest_bet() -> uint32_t {
+  [[nodiscard]] auto get_highest_bet() -> int32_t {
     auto iterable = get_players();
     auto max = std::max_element(
                     iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -160,7 +160,7 @@ class engine {
     return max == iterable.end() ? 0 : max->round_bet;
   }
 
-  [[nodiscard]] auto get_highest_game_bet() -> uint32_t {
+  [[nodiscard]] auto get_highest_game_bet() -> int32_t {
     auto iterable = get_players();
     auto max = std::max_element(
                     iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -191,8 +191,8 @@ class engine {
     return round_;
   }
 
-  [[nodiscard]] auto get_pot() noexcept -> uint32_t {
-    return get_flop_dealt() ? static_cast< uint32_t >(get_default_pot() * constants::RAKE_MULTI< A, B >) :
+  [[nodiscard]] auto get_pot() noexcept -> int32_t {
+    return get_flop_dealt() ? static_cast< int32_t >(get_default_pot() * constants::RAKE_MULTI< A, B >) :
                               get_default_pot();
   }
 
@@ -201,7 +201,7 @@ class engine {
   }
 
   auto join_player(
-                  uint32_t stack,
+                  int32_t stack,
                   const std::string &id,
                   std::optional< std::map< std::string, pybind11::object > > parameters = std::nullopt)
                   -> player {
@@ -386,9 +386,9 @@ class engine {
     return *(get_players().begin() + index);
   }
 
-  [[nodiscard]] auto get_default_pot() noexcept -> uint32_t {
+  [[nodiscard]] auto get_default_pot() noexcept -> int32_t {
     auto iterable = get_players();
-    std::vector< uint32_t > chips_bet;
+    std::vector< int32_t > chips_bet;
     for (auto const &player : iterable) {
       chips_bet.push_back(player.bet);
     }

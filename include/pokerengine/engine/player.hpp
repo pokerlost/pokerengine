@@ -14,9 +14,9 @@
 
 namespace pokerengine {
 struct player {
-  uint32_t stack;
-  uint32_t bet;
-  uint32_t round_bet;
+  int32_t stack;
+  int32_t bet;
+  int32_t round_bet;
   enums::state state;
 
   std::string id;
