@@ -44,7 +44,7 @@
 
 ### Built With
 
-> C++ pybind11 Python
+> C++ pybind11 magic_enum Python pydantic scikit-build-core black isort ruff mypy build
 
 ## Getting Started
 
