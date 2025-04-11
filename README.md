@@ -38,7 +38,8 @@
 
 ## About
 
-> A Texas Hold'em variant poker engine that allows you to calculate hand combinations separately from the game, create rooms and manage the game.
+> A Texas Hold'em variant poker engine that allows you to calculate hand combinations separately from the game, create
+> rooms and manage the game.
 > The first of its kind Python engine that enables the entire process of playing Texas Hold'em Poker.
 
 ### Built With
@@ -50,9 +51,11 @@
 ### Prerequisites
 
 > g++11 cmake python3.1*
+
 ### Installation
 
 To install project follow:
+
 ```shell
 git clone https://github.com/pokerlost/pokerengine && cd pokerengine
 python -m venv venv
@@ -75,8 +78,9 @@ Reach out to the maintainer at one of the following places:
 
 ## Contributing
 
-First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
-
+First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an
+amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly
+appreciated**.
 
 Please read [our contribution guidelines](docs/CONTRIBUTING.md), and thank you for being involved!
 
@@ -84,7 +88,8 @@ Please read [our contribution guidelines](docs/CONTRIBUTING.md), and thank you f
 
 The original setup of this repository is by [pokerlost](https://github.com/pokerlost).
 
-For a full list of all authors and contributors, see [the contributors page](https://github.com/pokerlost/pokerengine/contributors).
+For a full list of all authors and contributors,
+see [the contributors page](https://github.com/pokerlost/pokerengine/contributors).
 
 ## License
 
