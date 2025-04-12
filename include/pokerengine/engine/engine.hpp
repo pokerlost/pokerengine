@@ -261,7 +261,7 @@ class engine {
     std::vector< std::pair< result, int32_t > > results;
     std::for_each(iterable.begin(), iterable.end(), [&, index = 0](auto &player) mutable -> void {
       auto result = results.emplace_back(get_evaluation_result_one(cards, index), chips[index++]);
-      player.stack += result.second;
+      player.stack += player.bet + result.second;
     });
     set_players(iterable);
 
@@ -280,7 +280,7 @@ class engine {
     std::vector< int32_t > results;
     std::for_each(iterable.begin(), iterable.end(), [&, index = 0](auto &player) mutable -> void {
       auto result = results.emplace_back(index++ == winner ? -player.bet + adjusted_pot : -player.bet);
-      player.stack += result;
+      player.stack += player.bet + result;
     });
     set_players(iterable);
 
